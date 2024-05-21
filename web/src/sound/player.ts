@@ -2,37 +2,39 @@ import { Signal } from "signal-polyfill"
 import * as Tone from "tone"
 
 
-export const isPlaying = new Signal.State(false)
+export const isPlayingState = new Signal.State(false)
+export const playingFreq = new Signal.State(10)
 
-
-let bineuralBeat = 10
 
 const merge = new Tone.Merge().toDestination()
 const leftEar = new Tone.Oscillator()
 const rightEar = new Tone.Oscillator()
 //const rainMaker = new Tone.Noise("pink").start().toMaster()
 
-const freqs = calculateFreq(bineuralBeat)
+export const freqs = new Signal.Computed(() => {
+    return calculateFreq(playingFreq.get())
+})
 
 export async function play() {
-    if (isPlaying.get())
+    if (isPlayingState.get())
         return
     await Tone.start()
-    leftEar.set({ frequency: freqs.left, type: "sine"})
-    rightEar.set({ frequency: freqs.right, type: "sine"})
+    leftEar.set({ frequency: freqs.get().left, type: "sine"})
+    rightEar.set({ frequency: freqs.get().right, type: "sine"})
     leftEar.connect(merge, 0, 0)
     rightEar.connect(merge, 0, 1)
     rightEar.start()
     leftEar.start()
-    isPlaying.set(true)
+    isPlayingState.set(true)
 }
 
 export async function stop() {
-    if (!isPlaying.get())
+    if (!isPlayingState.get())
         return
     rightEar.stop()
     leftEar.stop()
-    isPlaying.set(false)
+    console.log("stop")
+    isPlayingState.set(false)
 }
 
 function calculateCarrierFreq(binauralBeat: number) {
@@ -43,8 +45,7 @@ function calculateCarrierFreq(binauralBeat: number) {
 
 function calculateFreq(binauralBeat: number) {
     const carrierFreq = calculateCarrierFreq(binauralBeat)
-    return {
-        left: carrierFreq + binauralBeat / 2,
-        right: carrierFreq - binauralBeat / 2
-    }
+    const left = (carrierFreq + binauralBeat / 2).toFixed(2)
+    const right = (carrierFreq - binauralBeat / 2).toFixed(2)
+    return { left, right }
 }
