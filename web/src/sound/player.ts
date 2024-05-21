@@ -1,43 +1,38 @@
+import { Signal } from "signal-polyfill"
 import * as Tone from "tone"
+
+
+export const isPlaying = new Signal.State(false)
+
 
 let bineuralBeat = 10
 
 const merge = new Tone.Merge().toDestination()
-//const leftEar = new Tone.Oscillator()
-//const rightEar = new Tone.Oscillator()
+const leftEar = new Tone.Oscillator()
+const rightEar = new Tone.Oscillator()
 //const rainMaker = new Tone.Noise("pink").start().toMaster()
 
 const freqs = calculateFreq(bineuralBeat)
 
-const synth = new Tone.Synth().toDestination()
-const synth2 = new Tone.Synth().toDestination()
-export function playSynth() {
-    const now = Tone.now()
-    synth.triggerAttack(freqs.leftFrequency, now)
-    synth2.triggerAttack(freqs.rightFrequency, now)
-    //synth.triggerAttackRelease("C4", "8n", now)
-    // synth.triggerAttackRelease("E4", "8n", now + 0.5)
-    // synth.triggerAttackRelease("G4", "8n", now + 1)
+export async function play() {
+    if (isPlaying.get())
+        return
+    await Tone.start()
+    leftEar.set({ frequency: freqs.left, type: "sine"})
+    rightEar.set({ frequency: freqs.right, type: "sine"})
+    leftEar.connect(merge, 0, 0)
+    rightEar.connect(merge, 0, 1)
+    rightEar.start()
+    leftEar.start()
+    isPlaying.set(true)
 }
 
-synth.connect(merge, 0, 0)
-synth2.connect(merge, 0, 1)
-//leftEar.connect(merge, 0, 0)
-//rightEar.connect(merge, 0, 1)
-
-
-
-//leftEar.set({
-//    frequency: "4n"
-//})
-//rightEar.set({
-//    frequency: "3n"
-//})
-
-export async function play() {
-    //await Tone.start()
-    //rightEar.start()
-    //leftEar.start()
+export async function stop() {
+    if (!isPlaying.get())
+        return
+    rightEar.stop()
+    leftEar.stop()
+    isPlaying.set(false)
 }
 
 function calculateCarrierFreq(binauralBeat: number) {
@@ -49,7 +44,7 @@ function calculateCarrierFreq(binauralBeat: number) {
 function calculateFreq(binauralBeat: number) {
     const carrierFreq = calculateCarrierFreq(binauralBeat)
     return {
-        leftFrequency: carrierFreq + binauralBeat / 2,
-        rightFrequency: carrierFreq - binauralBeat / 2
+        left: carrierFreq + binauralBeat / 2,
+        right: carrierFreq - binauralBeat / 2
     }
 }
