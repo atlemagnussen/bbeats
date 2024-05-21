@@ -1,6 +1,6 @@
 import { LitElement, css, html } from "lit"
 import { customElement } from "lit/decorators.js"
-import { play, playSynth } from "@app/sound/player"
+import { playSynth } from "@app/sound/player"
 
 @customElement('home-view')
 export class HomeView extends LitElement {
