@@ -1,6 +1,6 @@
 import { LitElement, css, html } from "lit"
 import { customElement } from "lit/decorators.js"
-import { play } from "@app/sound/player"
+import { play, playSynth } from "@app/sound/player"
 
 @customElement('home-view')
 export class HomeView extends LitElement {
@@ -18,7 +18,7 @@ export class HomeView extends LitElement {
     render() {
         return html`
             <p>Bineural</p>
-            <button @click=${play}>Play</button>
+            <button @click=${playSynth}>Play</button>
         `
     }
 }

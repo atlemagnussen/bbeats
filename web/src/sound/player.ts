@@ -3,26 +3,41 @@ import * as Tone from "tone"
 let bineuralBeat = 10
 
 const merge = new Tone.Merge().toDestination()
-const leftEar = new Tone.Oscillator()
-const rightEar = new Tone.Oscillator()
+//const leftEar = new Tone.Oscillator()
+//const rightEar = new Tone.Oscillator()
 //const rainMaker = new Tone.Noise("pink").start().toMaster()
-
-leftEar.connect(merge, 0, 0)
-rightEar.connect(merge, 0, 1)
 
 const freqs = calculateFreq(bineuralBeat)
 
-leftEar.set({
-    frequency: "4n"
-})
-rightEar.set({
-    frequency: "3n"
-})
+const synth = new Tone.Synth().toDestination()
+const synth2 = new Tone.Synth().toDestination()
+export function playSynth() {
+    const now = Tone.now()
+    synth.triggerAttack(freqs.leftFrequency, now)
+    synth2.triggerAttack(freqs.rightFrequency, now)
+    //synth.triggerAttackRelease("C4", "8n", now)
+    // synth.triggerAttackRelease("E4", "8n", now + 0.5)
+    // synth.triggerAttackRelease("G4", "8n", now + 1)
+}
+
+synth.connect(merge, 0, 0)
+synth2.connect(merge, 0, 1)
+//leftEar.connect(merge, 0, 0)
+//rightEar.connect(merge, 0, 1)
+
+
+
+//leftEar.set({
+//    frequency: "4n"
+//})
+//rightEar.set({
+//    frequency: "3n"
+//})
 
 export async function play() {
-    await Tone.start()
-    rightEar.start()
-    leftEar.start()
+    //await Tone.start()
+    //rightEar.start()
+    //leftEar.start()
 }
 
 function calculateCarrierFreq(binauralBeat: number) {
