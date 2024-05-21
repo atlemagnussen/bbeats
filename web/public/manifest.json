@@ -1,0 +1,18 @@
+{
+    "categories": ["productivity", "utilities"],
+	"name": "Tilde1",
+	"short_name": "Tilde",
+    "description": "Drawing",
+	"start_url": "/",
+	"scope": "/",
+	"theme_color": "#ff00ff",
+	"background_color": "#8b008b",
+	"display": "standalone",
+	"icons": [
+        {
+            "src": "https://tilde1.web.app/favicon.svg",
+            "sizes": "any",
+            "purpose": "any"
+        }
+    ]
+}

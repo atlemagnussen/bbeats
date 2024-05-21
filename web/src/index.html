@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <!--apple-->
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
+    <link rel="apple-touch-startup-image" href="/touch-icon-iphone-retina.png">
+    <meta name="apple-mobile-web-app-title" content="Tilde">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--end apple-->
+    <link rel="manifest" href="/manifest.json" />
+    <title>Tilde</title>
+</head>
+<body>
+    <header>
+        <a href="/about">About</a>
+        <a href="/grid">Grid</a>
+        <!-- <navigation-bar active="home" breakpoint="640">
+            <a slot="brand" href="/" class="logo">Tilde</a>
+            <a href="about">About</a>
+        </navigation-bar> -->
+    </header>
+    <main>
+        <router-slot></router-slot>
+    </main>
+    <script type="module" src="./app.ts"></script>
+</body>
+</html>
